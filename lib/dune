@@ -1,0 +1,19 @@
+(library
+ (name oquickjs)
+ (foreign_archives ../vendored/quickjs/quickjs )
+
+ (install_c_headers "quickjs.h")
+ (ctypes
+  (external_library_name quickjs)
+  (build_flags_resolver (vendored (c_flags -I . -Wno-incompatible-pointer-types :standard ) (c_library_flags :standard -lm)))
+  (headers (include "quickjs.h"))
+  (type_description
+   (instance Types)
+   (functor quickjs_types))
+  (function_description
+   (concurrency unlocked)
+   (instance Functions)
+   (functor quickjs_functions))
+  (generated_types Types_generated)
+  (generated_entry_point QuickJS))
+ )
