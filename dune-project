@@ -8,11 +8,11 @@
 (source
  (github username/reponame))
 
-(authors "Author Name <author@example.com>")
+(authors "Alicia Michael <a.michael1@uq.edu.au>")
 
-(maintainers "Maintainer Name <maintainer@example.com>")
+(maintainers "Alicia Michael <a.michael1@uq.edu.au>")
 
-(license LICENSE)
+(license BSD-2-Clause)
 
 (documentation https://url/to/documentation)
 
