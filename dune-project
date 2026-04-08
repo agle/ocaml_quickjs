@@ -1,7 +1,7 @@
 (lang dune 3.19)
 (using ctypes 0.3)
 
-(name oquickjs)
+(name quickjs_eval)
 
 (generate_opam_files true)
 
@@ -17,7 +17,7 @@
 (documentation https://url/to/documentation)
 
 (package
- (name oquickjs)
+ (name quickjs_eval)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends ocaml ctypes ppx_blob)

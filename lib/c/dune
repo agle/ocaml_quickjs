@@ -1,0 +1,34 @@
+(library
+ (public_name quickjs_eval.c)
+ (name quickjs_c)
+
+ (foreign_archives quickjs/quickjs)
+ (wrapped false)
+
+ (install_c_headers "quickjs")
+ (ctypes
+  (external_library_name quickjs)
+  (build_flags_resolver (vendored (c_flags -I . -Wno-incompatible-pointer-types :standard ) (c_library_flags :standard -lm)))
+  (headers (include "quickjs.h"))
+  (type_description
+   (instance Types)
+   (functor quickjs_types))
+  (function_description
+   (concurrency unlocked)
+   (instance Functions)
+   (functor quickjs_functions))
+  (generated_types Types_generated)
+  (generated_entry_point QuickJS))
+ )
+
+(subdir quickjs
+ (include_subdirs unqualified)
+ (foreign_library
+  (archive_name quickjs)
+  (language c)
+  (names cutils dtoa libregexp libunicode quickjs-libc quickjs )
+  (flags :standard -Wno-array-bounds -Wno-format-truncation -Wno-infinite-recursion -fwrapv 
+         -D_GNU_SOURCE "-DCONFIG_VERSION=\"2025-09-13\"" -O2 -Wno-array-bounds -Wno-format-truncation 
+         -Wno-infinite-recursion )))
+
+

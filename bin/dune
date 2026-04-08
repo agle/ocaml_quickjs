@@ -1,8 +1,0 @@
-(executable
- (public_name oquickjs)
- (name main)
- (libraries oquickjs ctypes)
- (flags -w -32)
- (preprocessor_deps (file ../vendored/katex.js))
- (preprocess (pps ppx_blob))
- )
