@@ -358,7 +358,6 @@ JSContext *JS_NewContextRaw(JSRuntime *rt);
 void JS_AddIntrinsicBaseObjects(JSContext *ctx);
 void JS_AddIntrinsicDate(JSContext *ctx);
 void JS_AddIntrinsicEval(JSContext *ctx);
-void JS_AddIntrinsicStringNormalize(JSContext *ctx);
 void JS_AddIntrinsicRegExpCompiler(JSContext *ctx);
 void JS_AddIntrinsicRegExp(JSContext *ctx);
 void JS_AddIntrinsicJSON(JSContext *ctx);
@@ -366,7 +365,10 @@ void JS_AddIntrinsicProxy(JSContext *ctx);
 void JS_AddIntrinsicMapSet(JSContext *ctx);
 void JS_AddIntrinsicTypedArrays(JSContext *ctx);
 void JS_AddIntrinsicPromise(JSContext *ctx);
+void JS_AddIntrinsicBigInt(JSContext *ctx);
 void JS_AddIntrinsicWeakRef(JSContext *ctx);
+void JS_AddPerformance(JSContext *ctx);
+void JS_AddIntrinsicDOMException(JSContext *ctx);
 
 JSValue js_string_codePointRange(JSContext *ctx, JSValueConst this_val,
                                  int argc, JSValueConst *argv);
@@ -703,7 +705,7 @@ JSValue JS_ToPropertyKey(JSContext *ctx, JSValueConst val);
 const char *JS_ToCStringLen2(JSContext *ctx, size_t *plen, JSValueConst val1, JS_BOOL cesu8);
 static inline const char *JS_ToCStringLen(JSContext *ctx, size_t *plen, JSValueConst val1)
 {
-    JS_ToCStringLen2(ctx, plen, val1, 0);
+    return JS_ToCStringLen2(ctx, plen, val1, 0);
 }
 static inline const char *JS_ToCString(JSContext *ctx, JSValueConst val1)
 {
@@ -826,6 +828,13 @@ JSValue JS_NewArrayBuffer(JSContext *ctx, uint8_t *buf, size_t len,
 JSValue JS_NewArrayBufferCopy(JSContext *ctx, const uint8_t *buf, size_t len);
 void JS_DetachArrayBuffer(JSContext *ctx, JSValueConst obj);
 uint8_t *JS_GetArrayBuffer(JSContext *ctx, size_t *psize, JSValueConst obj);
+
+
+JSValue JS_ParseJSON(JSContext *ctx, const char *buf, size_t buf_len,
+                               const char *filename);
+JSValue JS_JSONStringify(JSContext *ctx, JSValueConst obj,
+                                   JSValueConst replacer, JSValueConst space0);
+
 
 typedef enum JSTypedArrayEnum {
     JS_TYPED_ARRAY_UINT8C = 0,
@@ -1094,6 +1103,11 @@ int JS_SetModuleExport(JSContext *ctx, JSModuleDef *m, const char *export_name,
                        JSValue val);
 int JS_SetModuleExportList(JSContext *ctx, JSModuleDef *m,
                            const JSCFunctionListEntry *tab, int len);
+
+JSValue js_value_null();
+JSValue js_value_false();
+JSValue js_value_true();
+
 /* associate a JSValue to a C module */
 int JS_SetModulePrivateValue(JSContext *ctx, JSModuleDef *m, JSValue val);
 JSValue JS_GetModulePrivateValue(JSContext *ctx, JSModuleDef *m);

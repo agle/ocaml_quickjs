@@ -18,11 +18,14 @@ let eval_str ctx js n =
   check_error ctx;
   e
 
-let eval_str_ret_str ctx js n =
+let new_string ctx str =
+  JS.js_newstring_len ctx str (Unsigned.Size_t.of_int @@ String.length str)
+
+let eval_str_ret_str ctx ?(filename = "<file>") js =
   let r =
     JS.js_eval ctx js
       (String.length js |> Unsigned.Size_t.of_int)
-      n Unsigned.UInt32.zero
+      filename Unsigned.UInt32.zero
   in
   let r = JS.js_to_cstring ctx r in
   check_error ctx;

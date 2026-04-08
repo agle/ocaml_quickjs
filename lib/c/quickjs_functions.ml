@@ -17,10 +17,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let js_AddIntrinsicEval =
     foreign "JS_AddIntrinsicEval" (ptr T.js_context @-> returning void)
 
-  let js_AddIntrinsicStringNormalize =
-    foreign "JS_AddIntrinsicStringNormalize"
-      (ptr T.js_context @-> returning void)
-
   let js_AddIntrinsicRegExpCompiler =
     foreign "JS_AddIntrinsicRegExpCompiler" (ptr T.js_context @-> returning void)
 
@@ -164,6 +160,25 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let js_to_cstring =
     foreign "JS_ToCString"
       (ptr T.js_context @-> T.js_value_const @-> returning @@ string_opt)
+
+  let js_value_null = foreign "js_value_null" (void @-> returning @@ T.js_value)
+
+  let js_json_stringify =
+    foreign "JS_JSONStringify"
+      (ptr T.js_context @-> T.js_value_const (* obj *) @-> T.js_value_const
+      (* replacer *) @-> T.js_value_const (* space0 *)
+      @-> returning @@ T.js_value)
+
+  let js_parse_json =
+    foreign "JS_ParseJSON"
+      (ptr T.js_context @-> string (* buf *) @-> T.size_t (* buf_len *)
+      @-> string (* filename *) @-> returning
+      @@ T.js_value)
+
+  let js_newstring_len =
+    foreign "JS_NewStringLen"
+      (ptr T.js_context @-> string (* buf *) @-> T.size_t (* buf_len *)
+      @-> returning @@ T.js_value)
 
   (*
   let js_SetContextOpaque =
